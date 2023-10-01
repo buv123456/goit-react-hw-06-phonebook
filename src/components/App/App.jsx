@@ -1,11 +1,12 @@
-import { ContactFofm } from './ContactFofm/ContactFofm';
-import { Layout, WrapperStyled, Header } from './App.styled';
-import Phonebook from './Phonebook/Phonebook';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import Phonebook from '../Phonebook/Phonebook';
+import { Layout, WrapperStyled, Header } from './App.styled';
+import { ContactFofm } from '../ContactFofm/ContactFofm';
+import { getContacts } from 'redux/selectors';
 
 export function App() {
-  const contactsList = useSelector(state => state.contacts);
+  const contactsList = useSelector(getContacts);
 
   return (
     <Layout>

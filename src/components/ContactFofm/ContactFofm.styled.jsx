@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { ErrorMessage, Field, Form } from 'formik';
 
 export const FormStyled = styled(Form)`
-  /* align-items: center; */
   gap: 40px;
   width: 600px;
   display: flex;

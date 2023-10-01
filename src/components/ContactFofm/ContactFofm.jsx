@@ -1,7 +1,8 @@
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
+import { SignupSchema } from 'helpers/submitCheck';
 import {
   ButtonStyled,
   ErrorMsgStyled,
@@ -9,35 +10,15 @@ import {
   FormStyled,
   LabelStyled,
 } from './ContactFofm.styled';
-import { nanoid } from 'nanoid';
 
 const initialValues = {
   name: '',
   number: '',
 };
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .matches(
-      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
-      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-    )
-    .required('Required'),
-  number: Yup.string()
-    .min(2, 'Too Short!')
-    .max(30, 'Too Long!')
-    .matches(
-      /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
-    )
-    .required('Required'),
-});
-
 export function ContactFofm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getContacts);
 
   const handleSubmit = ({ name, number }, { resetForm }) => {
     name = name.trim();
@@ -46,7 +27,7 @@ export function ContactFofm() {
     if (contacts.some(i => i.name.toLowerCase() === name.toLowerCase())) {
       alert(name + ' is already in contacts list!');
     } else {
-      dispatch(addContact({ name, number, id: nanoid() }));
+      dispatch(addContact({ name, number }));
       resetForm();
     }
   };
