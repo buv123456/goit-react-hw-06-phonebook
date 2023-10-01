@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const ListStyled = styled.ul`
   width: 100%;
-  /* max-height: 280px; */
   font-size: 18px;
   flex-grow: 1;
   display: flex;

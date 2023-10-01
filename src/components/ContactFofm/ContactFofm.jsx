@@ -1,5 +1,7 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 import {
   ButtonStyled,
   ErrorMsgStyled,
@@ -7,6 +9,7 @@ import {
   FormStyled,
   LabelStyled,
 } from './ContactFofm.styled';
+import { nanoid } from 'nanoid';
 
 const initialValues = {
   name: '',
@@ -32,10 +35,20 @@ const SignupSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export function ContactFofm({ addContact }) {
-  const handleSubmit = (values, { resetForm }) => {
-    resetForm();
-    addContact(values);
+export function ContactFofm() {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+
+  const handleSubmit = ({ name, number }, { resetForm }) => {
+    name = name.trim();
+    number = number.trim();
+
+    if (contacts.some(i => i.name.toLowerCase() === name.toLowerCase())) {
+      alert(name + ' is already in contacts list!');
+    } else {
+      dispatch(addContact({ name, number, id: nanoid() }));
+      resetForm();
+    }
   };
 
   return (
